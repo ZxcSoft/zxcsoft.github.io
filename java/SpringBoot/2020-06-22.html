@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Java读取OpenSSL生成的秘钥, 进行RSA加解密 | 数字魔法</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel="icon" href="/logo.png">
+    <script charset="utf-8" src="/custom.js"></script>
+    <meta name="description" content="与其他系统对接时, 数据需要加密传输, 定义时使用了OpenSSL生成的RSA秘钥. 不需要转换, 直接使用该秘钥加解密">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="preload" href="/assets/css/0.styles.513c082a.css" as="style"><link rel="preload" href="/assets/js/app.53242422.js" as="script"><link rel="preload" href="/assets/js/4.c4fd3883.js" as="script"><link rel="preload" href="/assets/js/1.df5e0446.js" as="script"><link rel="preload" href="/assets/js/12.8e8667f6.js" as="script"><link rel="prefetch" href="/assets/js/10.c19a9d5a.js"><link rel="prefetch" href="/assets/js/11.77eb5465.js"><link rel="prefetch" href="/assets/js/13.d0182950.js"><link rel="prefetch" href="/assets/js/14.c5be1e8d.js"><link rel="prefetch" href="/assets/js/15.e4656b6f.js"><link rel="prefetch" href="/assets/js/16.aef688ab.js"><link rel="prefetch" href="/assets/js/17.fcd68b21.js"><link rel="prefetch" href="/assets/js/18.e6734018.js"><link rel="prefetch" href="/assets/js/5.44748fd2.js"><link rel="prefetch" href="/assets/js/6.4b223ed3.js"><link rel="prefetch" href="/assets/js/7.a591701a.js"><link rel="prefetch" href="/assets/js/8.9512c66b.js"><link rel="prefetch" href="/assets/js/9.fa77b9f6.js"><link rel="prefetch" href="/assets/js/vendors~flowchart.199cb9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.513c082a.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-19557b78><div data-v-19557b78><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-19557b78 data-v-19557b78><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-64685f0e data-v-19557b78 data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>数字魔法</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>zxcsoft.com</span>
+            
+          <span data-v-64685f0e>2017 - </span>
+          2020
+        </a></span></div></div> <div class="hide" data-v-19557b78><header class="navbar" data-v-19557b78><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="数字魔法" class="logo"> <span class="site-name">数字魔法</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/DB/" class="nav-link"><i class="iconfont undefined"></i>
+  DB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Linux/" class="nav-link"><i class="iconfont undefined"></i>
+  Linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Devops/" class="nav-link"><i class="iconfont undefined"></i>
+  Devops
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/FTP/" class="nav-link"><i class="iconfont undefined"></i>
+  FTP
+</a></li><li class="dropdown-item"><!----> <a href="/categories/SpringBoot/" class="nav-link"><i class="iconfont undefined"></i>
+  SpringBoot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/OpenSSL/" class="nav-link"><i class="iconfont undefined"></i>
+  OpenSSL
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-19557b78></div> <aside class="sidebar" data-v-19557b78><div class="personal-info-wrapper" data-v-042e23d4><img src="/avatar.jpg" alt="author-avatar" class="personal-img" data-v-042e23d4> <h3 class="name" data-v-042e23d4>
+    zxcsoft.com
+  </h3> <div class="num" data-v-042e23d4><div data-v-042e23d4><h3 data-v-042e23d4>7</h3> <h6 data-v-042e23d4>文章</h6></div> <div data-v-042e23d4><h3 data-v-042e23d4>7</h3> <h6 data-v-042e23d4>标签</h6></div></div> <hr data-v-042e23d4></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/DB/" class="nav-link"><i class="iconfont undefined"></i>
+  DB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Linux/" class="nav-link"><i class="iconfont undefined"></i>
+  Linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Devops/" class="nav-link"><i class="iconfont undefined"></i>
+  Devops
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/FTP/" class="nav-link"><i class="iconfont undefined"></i>
+  FTP
+</a></li><li class="dropdown-item"><!----> <a href="/categories/SpringBoot/" class="nav-link"><i class="iconfont undefined"></i>
+  SpringBoot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/OpenSSL/" class="nav-link"><i class="iconfont undefined"></i>
+  OpenSSL
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Java读取OpenSSL生成的秘钥, 进行RSA加解密</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/java/SpringBoot/2020-06-22.html#_1-生成秘钥" class="sidebar-link">1. 生成秘钥</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-1-使用openssl生成秘钥" class="sidebar-link">1.1 使用`OpenSSL`生成秘钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-2-查看私钥" class="sidebar-link">1.2 查看私钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-3-生成查看公钥" class="sidebar-link">1.3 生成查看公钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-4-加解密引入包" class="sidebar-link">1.4 加解密引入包</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-5-加解密代码" class="sidebar-link">1.5 加解密代码</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_1-6-rsa秘钥类型说明" class="sidebar-link">1.6 `RSA`秘钥类型说明</a></li></ul></li><li><a href="/java/SpringBoot/2020-06-22.html#_2-rsa格式转换" class="sidebar-link">2 `RSA`格式转换</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-1-生成pkcs1私钥" class="sidebar-link">2.1 生成`PKCS1`私钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-2-pkcs1私钥转换为pkcs8" class="sidebar-link">2.2 `PKCS1`私钥转换为`PKCS8`</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-3-pkcs8私钥转换为pkcs1" class="sidebar-link">2.3 `PKCS8`私钥转换为`PKCS1`</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-4-从pkcs1私钥中生成pkcs8公钥" class="sidebar-link">2.4 从`PKCS1`私钥中生成`PKCS8`公钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-5-从pkcs8私钥中生成pkcs8公钥" class="sidebar-link">2.5 从`PKCS8`私钥中生成`PKCS8`公钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-6-从pkcs8公钥转换pkcs1公钥" class="sidebar-link">2.6 从`PKCS8`公钥转换`PKCS1`公钥</a></li><li class="sidebar-sub-header"><a href="/java/SpringBoot/2020-06-22.html#_2-7-从pkcs1公钥转换pkcs8公钥" class="sidebar-link">2.7 从`PKCS1`公钥转换`PKCS8`公钥</a></li></ul></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-64685f0e data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>Java读取OpenSSL生成的秘钥, 进行RSA加解密</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>zxcsoft.com</span>
+            
+          <span data-v-64685f0e>2017 - </span>
+          2020
+        </a></span></div></div> <div data-v-19557b78><main class="page"><div class="page-title" style="display:none;"><h1>Java读取OpenSSL生成的秘钥, 进行RSA加解密</h1> <hr> <div data-v-34ea29db><i class="iconfont reco-account" data-v-34ea29db><span data-v-34ea29db>zxcsoft.com</span></i> <i class="iconfont reco-date" data-v-34ea29db><span data-v-34ea29db>2020-06-22</span></i> <!----> <i class="iconfont reco-tag tags" data-v-34ea29db><span class="tag-item" data-v-34ea29db>Web</span></i></div></div> <div class="theme-reco-content content__default" style="display:none;"><div class="custom-block tip"><p>OpenSSL生成的秘钥与java RSA加解密类生成的秘钥类型不一致, 导致加载秘钥失败. 通过引入一个工具包. 来实现加解密</p></div> <p></p><div class="table-of-contents"><ul><li><a href="#_1-生成秘钥">1. 生成秘钥</a><ul><li><a href="#_1-1-使用-openssl-生成秘钥">1.1 使用`OpenSSL`生成秘钥</a></li><li><a href="#_1-2-查看私钥">1.2 查看私钥</a></li><li><a href="#_1-3-生成查看公钥">1.3 生成查看公钥</a></li><li><a href="#_1-4-加解密引入包">1.4 加解密引入包</a></li><li><a href="#_1-5-加解密代码">1.5 加解密代码</a></li><li><a href="#_1-6-rsa-秘钥类型说明">1.6 `RSA`秘钥类型说明</a></li></ul></li><li><a href="#_2-rsa-格式转换">2 `RSA`格式转换</a><ul><li><a href="#_2-1-生成-pkcs1-私钥">2.1 生成`PKCS1`私钥</a></li><li><a href="#_2-2-pkcs1-私钥转换为-pkcs8">2.2 `PKCS1`私钥转换为`PKCS8`</a></li><li><a href="#_2-3-pkcs8-私钥转换为-pkcs1">2.3 `PKCS8`私钥转换为`PKCS1`</a></li><li><a href="#_2-4-从-pkcs1-私钥中生成-pkcs8-公钥">2.4 从`PKCS1`私钥中生成`PKCS8`公钥</a></li><li><a href="#_2-5-从-pkcs8-私钥中生成-pkcs8-公钥">2.5 从`PKCS8`私钥中生成`PKCS8`公钥</a></li><li><a href="#_2-6-从-pkcs8-公钥转换-pkcs1-公钥">2.6 从`PKCS8`公钥转换`PKCS1`公钥</a></li><li><a href="#_2-7-从-pkcs1-公钥转换-pkcs8-公钥">2.7 从`PKCS1`公钥转换`PKCS8`公钥</a></li></ul></li></ul></div><p></p> <h2 id="_1-生成秘钥">1. 生成秘钥</h2> <h3 id="_1-1-使用openssl生成秘钥">1.1 使用<code>OpenSSL</code>生成秘钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl genrsa -out rsa_private_key.pem <span class="token number">1024</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><img src="/assets/img/1.abf3434f.jpg" alt="生成秘钥"></p> <h3 id="_1-2-查看私钥">1.2 查看私钥</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>-----BEGIN RSA PRIVATE KEY-----
+MIICXgIBAAKBgQCtSXcCfb5pJ/CrOWDAdHVEO8wzoj/Waskia3T9nBOXJKbf1TqT
+S7bn8m/2kn/bx0p8FuK+LcH2TeCNa5DXyCE+k+qkqCXTI6U48aSKjzZ0eiCPRDm0
+ZfdCJoB3l7rxOx2jO/EXtjXC3VrX0vddjR/3AGDm/TUmlIkm0IpHzdPSAwIDAQAB
+AoGBAI0KxKD0c+znI05aL1O19lSJT1Wfc9IzrG4lhF1/kbptjJ2W0kxdTgxQGa1Z
+5FOgTBHgFsGwQLUXAfRZXtUjAVq0sEVFzM0rWRr8B63UFokY198jL/1XgcgAp8jP
+BbJRI1Mp/TdNtsdkK4bE/6pJsZrlLCpsA9uz91AaddN60bhRAkEA2t3Sk1aqfwSP
+Delwv96nFwgb8XbZ5i4BgHp4UDFyoW/g6VhaLEOyM+VBUOK4iVKaNOZdtdFazlrS
+NhFY18iyxwJBAMqv9LZNeDajQ2Hju1B8/ZV2plCROh8Jvy7Dike6BI/NvVgm/h9O
+dsZzqenlMX24232Sl4WnUBH+gr6DzwsO6uUCQQCroMdAQvXwJOMJRcXkr/TXWsSO
+1WSJ3AnRdjhiqmP5tIHqeh48F9nmWCCgDSoohV3nnb5elY1fxFiTjYbdr8SBAkBW
+MBRDIRYpRat1iL0yMLQ0Rkvanqa0ZBSj8gpvDa6656XIQmx1K4xePvjVuNwetei/
+sQI1lzv5Kty13p6/+QvxAkEArSPbBXRhFKVKiR9tvvz87UYA4bchiuDseGWhqB6H
+37grzW5eGPfd8CAoJKWp2CmZa1Ad86+YRXvWwKhE5/vBpg==
+-----END RSA PRIVATE KEY-----
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><h3 id="_1-3-生成查看公钥">1.3 生成查看公钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -in rsa_private_key.pem -out rsa_public_key_1024.pub -pubout
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCtSXcCfb5pJ/CrOWDAdHVEO8wz
+oj/Waskia3T9nBOXJKbf1TqTS7bn8m/2kn/bx0p8FuK+LcH2TeCNa5DXyCE+k+qk
+qCXTI6U48aSKjzZ0eiCPRDm0ZfdCJoB3l7rxOx2jO/EXtjXC3VrX0vddjR/3AGDm
+/TUmlIkm0IpHzdPSAwIDAQAB
+-----END PUBLIC KEY-----
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="_1-4-加解密引入包">1.4 加解密引入包</h3> <div class="language-xml line-numbers-mode"><pre class="language-xml"><code>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.bouncycastle<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>bcprov-jdk15on<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>1.56<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><h3 id="_1-5-加解密代码">1.5 加解密代码</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
+@Component
+@Slf4j
+public class RSAUtil {
+
+    @Value(&quot;${config.rsa.privateKey}&quot;)
+    private String privateKey;
+    @Value(&quot;${config.rsa.publicKey}&quot;)
+    private String publicKey;
+
+    public static void main(String[] args) {
+        RSAUtil rsaUtil = new RSAUtil();
+        rsaUtil.publicKey = &quot;MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCtSXcCfb5pJ/CrOWDAdHVEO8wzoj/Waskia3T9nBOXJKbf1TqTS7bn8m/2kn/bx0p8FuK+LcH2TeCNa5DXyCE+k+qkqCXTI6U48aSKjzZ0eiCPRDm0ZfdCJoB3l7rxOx2jO/EXtjXC3VrX0vddjR/3AGDm/TUmlIkm0IpHzdPSAwIDAQAB&quot;;
+
+        rsaUtil.privateKey = &quot;MIICXgIBAAKBgQCtSXcCfb5pJ/CrOWDAdHVEO8wzoj/Waskia3T9nBOXJKbf1TqTS7bn8m/2kn/bx0p8FuK+LcH2TeCNa5DXyCE+k+qkqCXTI6U48aSKjzZ0eiCPRDm0ZfdCJoB3l7rxOx2jO/EXtjXC3VrX0vddjR/3AGDm/TUmlIkm0IpHzdPSAwIDAQABAoGBAI0KxKD0c+znI05aL1O19lSJT1Wfc9IzrG4lhF1/kbptjJ2W0kxdTgxQGa1Z5FOgTBHgFsGwQLUXAfRZXtUjAVq0sEVFzM0rWRr8B63UFokY198jL/1XgcgAp8jPBbJRI1Mp/TdNtsdkK4bE/6pJsZrlLCpsA9uz91AaddN60bhRAkEA2t3Sk1aqfwSPDelwv96nFwgb8XbZ5i4BgHp4UDFyoW/g6VhaLEOyM+VBUOK4iVKaNOZdtdFazlrSNhFY18iyxwJBAMqv9LZNeDajQ2Hju1B8/ZV2plCROh8Jvy7Dike6BI/NvVgm/h9OdsZzqenlMX24232Sl4WnUBH+gr6DzwsO6uUCQQCroMdAQvXwJOMJRcXkr/TXWsSO1WSJ3AnRdjhiqmP5tIHqeh48F9nmWCCgDSoohV3nnb5elY1fxFiTjYbdr8SBAkBWMBRDIRYpRat1iL0yMLQ0Rkvanqa0ZBSj8gpvDa6656XIQmx1K4xePvjVuNwetei/sQI1lzv5Kty13p6/+QvxAkEArSPbBXRhFKVKiR9tvvz87UYA4bchiuDseGWhqB6H37grzW5eGPfd8CAoJKWp2CmZa1Ad86+YRXvWwKhE5/vBpg==&quot;;
+        System.out.println(rsaUtil.encrypt(&quot;李四&quot;));
+        System.out.println(rsaUtil.encrypt(&quot;123456789012345678&quot;));
+        System.out.println(&quot;李四&quot;.equals(rsaUtil.decrypt(rsaUtil.encrypt(&quot;李四&quot;))));
+    }
+
+    public String encrypt(String str) {
+        try {
+            //base64编码的公钥
+            byte[] decoded = Base64.decodeBase64(publicKey);
+            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance(&quot;RSA&quot;).generatePublic(new X509EncodedKeySpec(decoded));
+            //RSA加密
+            Cipher cipher = Cipher.getInstance(&quot;RSA&quot;);
+            cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+            return Base64.encodeBase64String(cipher.doFinal(str.getBytes(StandardCharsets.UTF_8)));
+        } catch (Exception e) {
+            log.error(&quot;encrypt failed: str[&quot; + str + &quot;], publicKey[&quot; + publicKey + &quot;]&quot;);
+            throw new RunTimeException(&quot;解密失败&quot;, e);
+        }
+    }
+
+    public String decrypt(String str) {
+        try {
+            //64位解码加密后的字符串
+            byte[] inputByte = Base64.decodeBase64(str.getBytes(StandardCharsets.UTF_8));
+            //base64编码的私钥
+            byte[] decoded = Base64.decodeBase64(privateKey);
+            org.bouncycastle.asn1.pkcs.RSAPrivateKey rsaPrivateKey = org.bouncycastle.asn1.pkcs.RSAPrivateKey.getInstance(decoded);
+            RSAPrivateKeySpec rsaPrivKeySpec = new RSAPrivateKeySpec(rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());
+            RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance(&quot;RSA&quot;).generatePrivate(rsaPrivKeySpec);
+            //RSA解密
+            Cipher cipher = Cipher.getInstance(&quot;RSA&quot;);
+            cipher.init(Cipher.DECRYPT_MODE, priKey);
+            return new String(cipher.doFinal(inputByte));
+        } catch (Exception e) {
+            log.error(&quot;decrypt failed: str[&quot; + str + &quot;], privateKey[&quot; + publicKey + &quot;]&quot;, e);
+            throw new RunTimeException(&quot;解密失败&quot;, e);
+        }
+    }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br></div></div><h3 id="_1-6-rsa秘钥类型说明">1.6 <code>RSA</code>秘钥类型说明</h3> <p>公钥加密标准（Public Key Cryptography Standards, PKCS）</p> <table><thead><tr><th>PKCS</th> <th>版本</th> <th>名称</th> <th>简介</th></tr></thead> <tbody><tr><td>PKCS #1 [^1]</td> <td>2.1</td> <td>RSA密码编译标准（RSA Cryptography Standard）</td> <td>定义了RSA的数理基础、公/私钥格式，以及加/解密、签/验章的流程。1.5版本曾经遭到攻击。</td></tr> <tr><td>PKCS #2</td> <td>-</td> <td>撤销</td> <td>原本是用以规范RSA加密摘要的转换方式，现已被纳入PKCS#1之中。</td></tr> <tr><td>PKCS #3</td> <td>1.4</td> <td>DH密钥协议标准（Diffie-Hellman key agreement Standard）</td> <td>规范以DH密钥协议为基础的密钥协议标准。其功能，可以让两方通过金议协议，拟定一把会议密钥(Session key)。</td></tr> <tr><td>PKCS #4</td> <td>-</td> <td>撤销</td> <td>原本用以规范转换RSA密钥的流程。已被纳入PKCS#1之中。</td></tr> <tr><td>PKCS #5</td> <td>2.0</td> <td>密码基植加密标准（Password-based Encryption Standard）</td> <td>参见RFC 2898与PBKDF2。</td></tr> <tr><td>PKCS #6</td> <td>1.5</td> <td>证书扩展语法标准（Extended-Certificate Syntax Standard）</td> <td>将原本X.509的证书格式标准加以扩充。</td></tr> <tr><td>PKCS #7</td> <td>1.5</td> <td>密码消息语法标准（Cryptographic Message Syntax Standard）</td> <td>参见RFC 2315。规范了以公开密钥基础设施（PKI）所产生之签名/密文之格式。其目的一样是为了拓展数字证书的应用。其中，包含了S/MIME与CMS。</td></tr> <tr><td>PKCS #8 [^2]</td> <td>1.2</td> <td>私钥消息表示标准（Private-Key Information Syntax Standard）.</td> <td>Apache读取证书私钥的标准。</td></tr> <tr><td>PKCS #9</td> <td>2.0</td> <td>选择属性格式（Selected Attribute Types）</td> <td>定义PKCS#6、7、8、10的选择属性格式。</td></tr> <tr><td>PKCS #10</td> <td>1.7</td> <td>证书申请标准（Certification Request Standard）	参见RFC 2986。</td> <td>规范了向证书中心申请证书之CSR（certificate signing request）的格式。</td></tr> <tr><td>PKCS #11</td> <td>2.20</td> <td>密码设备标准接口（Cryptographic Token Interface (Cryptoki)）</td> <td>定义了密码设备的应用程序接口（API）之规格。</td></tr> <tr><td>PKCS #12</td> <td>1.0</td> <td>个人消息交换标准（Personal Information Exchange Syntax Standard）</td> <td>定义了包含私钥与公钥证书（public key certificate）的文件格式。私钥采密码(password)保护。常见的PFX就履行了PKCS#12。</td></tr> <tr><td>PKCS #13</td> <td>–</td> <td>椭圆曲线密码学标准（Elliptic curve cryptography Standard）</td> <td>制定中。规范以椭圆曲线密码学为基础所发展之密码技术应用。椭圆曲线密码学是新的密码学技术，其强度与效率皆比现行以指数运算为基础之密码学算法来的优秀。然而，该算法的应用尚不普及。</td></tr> <tr><td>PKCS #14</td> <td>–</td> <td>拟随机数产生器标准（Pseudo-random Number Generation）</td> <td>制定中。规范拟随机数产生器的使用与设计。</td></tr> <tr><td>PKCS #15</td> <td>1.1</td> <td>密码设备消息格式标准（Cryptographic Token Information Format Standard）</td> <td>定义了密码</td></tr></tbody></table> <p>[^1]:<code>PKCS #1</code>为<code>OpenSSH</code>默认使用的加密标准<br>
+[^2]:<code>PKCS #8</code>为<code>Java</code>默认使用的加密标准</p> <p>java默认使用的RSAKey</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>byte[] decoded = Base64.decodeBase64(publicKey);
+RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance(&quot;RSA&quot;).generatePublic(new X509EncodedKeySpec(decoded));
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h2 id="_2-rsa格式转换">2 <code>RSA</code>格式转换</h2> <h3 id="_2-1-生成pkcs1私钥">2.1 生成<code>PKCS1</code>私钥</h3> <p><code>OpenSSL</code>生成<code>PKCS1</code>格式的私钥，密钥长度1024位</p> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl genrsa -out private.pem <span class="token number">1024</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="_2-2-pkcs1私钥转换为pkcs8">2.2 <code>PKCS1</code>私钥转换为<code>PKCS8</code></h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl pkcs8 -topk8 -inform PEM -in private.pem -outform pem -nocrypt -out pkcs8.pem
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="_2-3-pkcs8私钥转换为pkcs1">2.3 <code>PKCS8</code>私钥转换为<code>PKCS1</code></h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -in pkcs8.pem -out pkcs1.pem
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="_2-4-从pkcs1私钥中生成pkcs8公钥">2.4 从<code>PKCS1</code>私钥中生成<code>PKCS8</code>公钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -in private.pem -pubout -out public.pem
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="_2-5-从pkcs8私钥中生成pkcs8公钥">2.5 从<code>PKCS8</code>私钥中生成<code>PKCS8</code>公钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -in pkcs8.pem -pubout -out public_pkcs8.pem
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>与2.4生成的结果一致</p> <h3 id="_2-6-从pkcs8公钥转换pkcs1公钥">2.6 从<code>PKCS8</code>公钥转换<code>PKCS1</code>公钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -pubin -in public_pkcs8.pem -RSAPublicKey_out
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>生成前后文件一致</p> <h3 id="_2-7-从pkcs1公钥转换pkcs8公钥">2.7 从<code>PKCS1</code>公钥转换<code>PKCS8</code>公钥</h3> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>openssl rsa -RSAPublicKey_in -in pub_pkcs1.pem -pubout
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>生成前后文件一致</p></div> <footer class="page-edit" style="display:none;"><!----> <div class="last-updated"><span class="prefix">最后更新日期: </span> <span class="time">1 分钟前</span></div></footer> <!----> <!----></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-44bd5a18 data-v-44bd5a18><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-44bd5a18><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-44bd5a18></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-44bd5a18></path></svg></div><div class="kanbanniang" data-v-5775ee02><div class="banniang-container" style="display:;" data-v-5775ee02><div class="messageBox" style="right:80px;bottom:190px;display:none;" data-v-5775ee02>
+      欢迎来到 数字魔法
+    </div> <div class="operation" style="right:80px;bottom:40px;display:;" data-v-5775ee02><i class="kbnfont kbn-ban-home ban-home" data-v-5775ee02></i> <i class="kbnfont kbn-ban-message message" data-v-5775ee02></i> <i class="kbnfont kbn-ban-close close" data-v-5775ee02></i> <a target="_blank" href="https://vuepress-theme-reco.recoluan.com/views/plugins/kanbanniang.html" data-v-5775ee02><i class="kbnfont kbn-ban-info info" data-v-5775ee02></i></a> <i class="kbnfont kbn-ban-theme skin" style="display:none;" data-v-5775ee02></i></div> <canvas id="banniang" width="150" height="220" class="live2d" style="right:80px;bottom:-20px;opacity:0.9;" data-v-5775ee02></canvas></div> <div class="showBanNiang" style="display:none;" data-v-5775ee02>
+    看板娘
+  </div></div><div class="reco-bgm-panel" data-v-39f9e6e0><audio id="bgm" src="/music/Down.mp3" data-v-39f9e6e0></audio> <div class="reco-float-box" style="bottom:200px;z-index:999999;display:none;" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><img src="/music/Down.jpg" data-v-39f9e6e0></div> <div class="reco-bgm-box" style="left:10px;bottom:10px;z-index:999999;" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><div class="reco-bgm-cover" style="background-image:url(/music/Down.jpg);" data-v-39f9e6e0><div class="mini-operation" style="display:none;" data-v-39f9e6e0><i class="reco-bgm reco-bgm-pause" style="display:none;" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-play" style="display:none;" data-v-39f9e6e0></i></div> <div class="falut-message" style="display:none;" data-v-39f9e6e0>
+          播放失败
+        </div></div> <div class="reco-bgm-info" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><div class="info-box" data-v-39f9e6e0><i class="reco-bgm reco-bgm-music music" data-v-39f9e6e0></i>Down</div> <div class="info-box" data-v-39f9e6e0><i class="reco-bgm reco-bgm-artist" data-v-39f9e6e0></i>Marian Hill</div> <div class="reco-bgm-progress" data-v-39f9e6e0><div class="progress-bar" data-v-39f9e6e0><div class="bar" data-v-39f9e6e0></div></div></div> <div class="reco-bgm-operation" data-v-39f9e6e0><i class="reco-bgm reco-bgm-last last" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-pause pause" style="display:none;" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-play play" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-next next" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-volume1 volume" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-mute mute" style="display:none;" data-v-39f9e6e0></i> <div class="volume-bar" data-v-39f9e6e0><div class="bar" data-v-39f9e6e0></div></div></div></div> <div class="reco-bgm-left-box" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><i class="reco-bgm reco-bgm-left" data-v-39f9e6e0></i></div></div></div></div></div>
+    <script src="/assets/js/app.53242422.js" defer></script><script src="/assets/js/4.c4fd3883.js" defer></script><script src="/assets/js/1.df5e0446.js" defer></script><script src="/assets/js/12.8e8667f6.js" defer></script>
+  </body>
+</html>
