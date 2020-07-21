@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring BeanCopier拷贝指定字段,过滤空数据字段 | 数字魔法</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel="icon" href="/logo.png">
+    <script charset="utf-8" src="/custom.js"></script>
+    <meta name="description" content="使用BeanCopier时,有部分需求会过滤数据字段, 过滤空数据字段">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="preload" href="/assets/css/0.styles.513c082a.css" as="style"><link rel="preload" href="/assets/js/app.15e8c4e9.js" as="script"><link rel="preload" href="/assets/js/4.c4fd3883.js" as="script"><link rel="preload" href="/assets/js/1.df5e0446.js" as="script"><link rel="preload" href="/assets/js/19.27acaead.js" as="script"><link rel="prefetch" href="/assets/js/10.c19a9d5a.js"><link rel="prefetch" href="/assets/js/11.828a62e3.js"><link rel="prefetch" href="/assets/js/12.8e8667f6.js"><link rel="prefetch" href="/assets/js/13.d0182950.js"><link rel="prefetch" href="/assets/js/14.c5be1e8d.js"><link rel="prefetch" href="/assets/js/15.e4656b6f.js"><link rel="prefetch" href="/assets/js/16.aef688ab.js"><link rel="prefetch" href="/assets/js/17.fcd68b21.js"><link rel="prefetch" href="/assets/js/18.e6734018.js"><link rel="prefetch" href="/assets/js/5.44748fd2.js"><link rel="prefetch" href="/assets/js/6.4b223ed3.js"><link rel="prefetch" href="/assets/js/7.a591701a.js"><link rel="prefetch" href="/assets/js/8.9512c66b.js"><link rel="prefetch" href="/assets/js/9.fa77b9f6.js"><link rel="prefetch" href="/assets/js/vendors~flowchart.199cb9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.513c082a.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-19557b78><div data-v-19557b78><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-19557b78 data-v-19557b78><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-64685f0e data-v-19557b78 data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>数字魔法</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>zxcsoft.com</span>
+            
+          <span data-v-64685f0e>2017 - </span>
+          2020
+        </a></span></div></div> <div class="hide" data-v-19557b78><header class="navbar" data-v-19557b78><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="数字魔法" class="logo"> <span class="site-name">数字魔法</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/DB/" class="nav-link"><i class="iconfont undefined"></i>
+  DB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Linux/" class="nav-link"><i class="iconfont undefined"></i>
+  Linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Devops/" class="nav-link"><i class="iconfont undefined"></i>
+  Devops
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/FTP/" class="nav-link"><i class="iconfont undefined"></i>
+  FTP
+</a></li><li class="dropdown-item"><!----> <a href="/categories/SpringBoot/" class="nav-link"><i class="iconfont undefined"></i>
+  SpringBoot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/OpenSSL/" class="nav-link"><i class="iconfont undefined"></i>
+  OpenSSL
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-19557b78></div> <aside class="sidebar" data-v-19557b78><div class="personal-info-wrapper" data-v-042e23d4><img src="/avatar.jpg" alt="author-avatar" class="personal-img" data-v-042e23d4> <h3 class="name" data-v-042e23d4>
+    zxcsoft.com
+  </h3> <div class="num" data-v-042e23d4><div data-v-042e23d4><h3 data-v-042e23d4>8</h3> <h6 data-v-042e23d4>文章</h6></div> <div data-v-042e23d4><h3 data-v-042e23d4>8</h3> <h6 data-v-042e23d4>标签</h6></div></div> <hr data-v-042e23d4></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/DB/" class="nav-link"><i class="iconfont undefined"></i>
+  DB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Linux/" class="nav-link"><i class="iconfont undefined"></i>
+  Linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Devops/" class="nav-link"><i class="iconfont undefined"></i>
+  Devops
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/FTP/" class="nav-link"><i class="iconfont undefined"></i>
+  FTP
+</a></li><li class="dropdown-item"><!----> <a href="/categories/SpringBoot/" class="nav-link"><i class="iconfont undefined"></i>
+  SpringBoot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/OpenSSL/" class="nav-link"><i class="iconfont undefined"></i>
+  OpenSSL
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Spring BeanCopier拷贝指定字段,过滤空数据字段</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/java/SpringBoot/2020-07-21.html#_1-重写beancopyier方法" class="sidebar-link">1. 重写BeanCopyier方法</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/SpringBoot/2020-07-21.html#_2-测试" class="sidebar-link">2. 测试</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-64685f0e data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>Spring BeanCopier拷贝指定字段,过滤空数据字段</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>zxcsoft.com</span>
+            
+          <span data-v-64685f0e>2017 - </span>
+          2020
+        </a></span></div></div> <div data-v-19557b78><main class="page"><div class="page-title" style="display:none;"><h1>Spring BeanCopier拷贝指定字段,过滤空数据字段</h1> <hr> <div data-v-34ea29db><i class="iconfont reco-account" data-v-34ea29db><span data-v-34ea29db>zxcsoft.com</span></i> <i class="iconfont reco-date" data-v-34ea29db><span data-v-34ea29db>2020-07-21</span></i> <!----> <i class="iconfont reco-tag tags" data-v-34ea29db><span class="tag-item" data-v-34ea29db>Web</span><span class="tag-item" data-v-34ea29db>cglib</span></i></div></div> <div class="theme-reco-content content__default" style="display:none;"><div class="custom-block tip"><p>Spring BeanCopier经过大量测试, 通过生成字节码class的方式, 直接拷贝值, 性能可以比肩get/set方法
+但是在实际开发时, 遇到bean部分字段拷贝, 过滤null值拷贝需求</p></div> <p></p><div class="table-of-contents"><ul><li><a href="#_1-重写beancopyier方法">1. 重写BeanCopyier方法</a></li><li><a href="#_2-测试">2. 测试</a></li></ul></div><p></p> <h2 id="_1-重写beancopyier方法">1. 重写BeanCopyier方法</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.map.LRUMap;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.asm.ClassVisitor;
+import org.springframework.asm.Label;
+import org.springframework.asm.Type;
+import org.springframework.cglib.core.*;
+
+import javax.validation.constraints.NotNull;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Modifier;
+import java.security.ProtectionDomain;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author Error
+ */
+public abstract class MyBeanCopier {
+
+    // 生成的BeanCopier唯一值
+    private static final BeanCopierKey KEY_FACTORY = (BeanCopierKey) KeyFactory.create(BeanCopierKey.class);
+    // converter 转换接口, converter接口 Object convert(Object var1, Class var2, Object var3)  var1 传入值, var2 传入值class, var3 传入源方法名称
+    private static final Type CONVERTER = TypeUtils.parseType(&quot;org.springframework.cglib.core.Converter&quot;);
+    // 定义当前类, 注意修改类路径!!!
+    private static final Type BEAN_COPIER = TypeUtils.parseType(&quot;com.zxcsoft.MyBeanCopier&quot;);
+    // 定义生成class的 copy 方法
+    private static final Signature COPY = new Signature(&quot;copy&quot;, Type.VOID_TYPE, new Type[]{Constants.TYPE_OBJECT, Constants.TYPE_OBJECT, CONVERTER});
+    // 定义convert接口的conver方法
+    private static final Signature CONVERT = TypeUtils.parseSignature(&quot;Object convert(Object, Class, Object)&quot;);
+    // 定义Objects.nonNull()方法, 在过滤对象属性时使用本方法过滤
+    private static final MethodInfo NON_NULL = ReflectUtils.getMethodInfo(ReflectUtils.findMethod(&quot;java.util.Objects.nonNull(java.lang.Object)&quot;));
+    // LRU缓存生成的MyBeanCopier方法
+    private static final Map&lt;BeanCopierKey, MyBeanCopier&gt; COPIER_CACHE = Collections.synchronizedMap(new LRUMap&lt;&gt;(2000, 100));
+
+    // 根据参数生成, 缓存MyBeanCopier
+    public static MyBeanCopier create(Class&lt;?&gt; source, Class&lt;?&gt; target, boolean skipNull, boolean useConverter, List&lt;String&gt; fields) {
+        BeanCopierKey key = (BeanCopierKey) KEY_FACTORY.newInstance(source.getName(), target.getName(), useConverter, StringUtils.join(fields, &quot;,&quot;));
+        return COPIER_CACHE.computeIfAbsent(key, k -&gt; {
+            Generator gen = new Generator();
+            gen.setSkipNull(skipNull);
+            gen.setSource(source);
+            gen.setTarget(target);
+            gen.setUseConverter(useConverter);
+            gen.setFields(fields);
+            return gen.create(key);
+        });
+    }
+
+    /**
+     * 拷贝树形
+     *
+     * @param from      从对象
+     * @param to        目标对象
+     * @param converter 转换器
+     */
+    public abstract void copy(Object from, Object to, Converter converter);
+
+    /**
+     * key对象
+     */
+    interface BeanCopierKey {
+        Object newInstance(String source, String target, boolean useConverter, String fields);
+    }
+
+    /**
+     * 转换
+     */
+    public static class Generator extends AbstractClassGenerator&lt;Object&gt; {
+        private static final Source SOURCE = new Source(MyBeanCopier.class.getName());
+        private Class&lt;?&gt; source;
+        private Class&lt;?&gt; target;
+        private boolean useConverter;
+
+        /**
+        * 添加的需要转换的字段
+        */
+        private List&lt;String&gt; fields;
+        /**
+        * 是否需要跳过数据为null的字段
+        */
+        private boolean skipNull;
+
+        public Generator() {
+            super(SOURCE);
+        }
+
+        private static boolean compatible(PropertyDescriptor getter, PropertyDescriptor setter) {
+            return setter.getPropertyType().isAssignableFrom(getter.getPropertyType());
+        }
+
+        public void setSource(Class&lt;?&gt; source) {
+            if (!Modifier.isPublic(source.getModifiers())) {
+                setNamePrefix(source.getName());
+            }
+            this.source = source;
+        }
+
+        public void setTarget(Class&lt;?&gt; target) {
+            if (!Modifier.isPublic(target.getModifiers())) {
+                setNamePrefix(target.getName());
+            }
+            this.target = target;
+        }
+
+        public void setUseConverter(boolean useConverter) {
+            this.useConverter = useConverter;
+        }
+
+        public void setFields(List&lt;String&gt; fields) {
+            this.fields = fields;
+        }
+
+        public void setSkipNull(boolean skipNull) {
+            this.skipNull = skipNull;
+        }
+
+        @Override
+        protected ClassLoader getDefaultClassLoader() {
+            return source.getClassLoader();
+        }
+
+        @Override
+        protected ProtectionDomain getProtectionDomain() {
+            return ReflectUtils.getProtectionDomain(source);
+        }
+
+        public LattoBeanCopier create(BeanCopierKey key) {
+            return (LattoBeanCopier) super.create(key);
+        }
+
+        @Override
+        public void generateClass(ClassVisitor v) {
+            Type sourceType = Type.getType(source);
+            Type targetType = Type.getType(target);
+            ClassEmitter ce = new ClassEmitter(v);
+            ce.begin_class(Constants.V1_8,
+                    Constants.ACC_PUBLIC,
+                    getClassName(),
+                    BEAN_COPIER,
+                    null,
+                    Constants.SOURCE_FILE);
+
+            EmitUtils.null_constructor(ce);
+            CodeEmitter e = ce.begin_method(Constants.ACC_PUBLIC, COPY, null);
+            PropertyDescriptor[] getters = ReflectUtils.getBeanGetters(source);
+            PropertyDescriptor[] setters = ReflectUtils.getBeanSetters(target);
+
+            Map&lt;String, PropertyDescriptor&gt; names = new HashMap&lt;&gt;(16);
+            for (PropertyDescriptor propertyDescriptor : getters) {
+                names.put(propertyDescriptor.getName(), propertyDescriptor);
+            }
+            Local targetLocal = e.make_local();
+            Local sourceLocal = e.make_local();
+            if (useConverter) {
+                e.load_arg(1);
+                e.checkcast(targetType);
+                e.store_local(targetLocal);
+                e.load_arg(0);
+                e.checkcast(sourceType);
+                e.store_local(sourceLocal);
+            } else {
+                e.load_arg(1);
+                e.checkcast(targetType);
+                e.load_arg(0);
+                e.checkcast(sourceType);
+            }
+            for (PropertyDescriptor setter : setters) {
+                // 这里过滤字段
+                if (CollectionUtils.isNotEmpty(fields) &amp;&amp; !fields.contains(setter.getName())) {
+                    continue;
+                }
+                PropertyDescriptor getter = names.get(setter.getName());
+                if (getter != null) {
+                    MethodInfo read = ReflectUtils.getMethodInfo(getter.getReadMethod());
+                    MethodInfo write = ReflectUtils.getMethodInfo(setter.getWriteMethod());
+                    // 使用convert时, convert自己实现跳过null
+                    if (useConverter) {
+                        Type setterType = write.getSignature().getArgumentTypes()[0];
+                        e.load_local(targetLocal);
+                        e.load_arg(2);
+                        e.load_local(sourceLocal);
+                        e.invoke(read);
+                        e.box(read.getSignature().getReturnType());
+                        EmitUtils.load_class(e, setterType);
+                        e.push(write.getSignature().getName());
+                        e.invoke_interface(CONVERTER, CONVERT);
+                        e.unbox_or_zero(setterType);
+                        e.invoke(write);
+                    } else if (compatible(getter, setter)) {
+                        // 是否需要跳过null
+                        if (skipNull) {
+                            // 添加结束标记
+                            Label end = e.make_label();
+                            // 加载堆栈参数2个参数
+                            e.dup2();
+                            // 执行读取,结果压入堆栈
+                            e.invoke(read);
+                            // 堆栈数据执行Objects.nonNull(), 结果压入堆栈
+                            e.invoke(NON_NULL);
+                            // 判断是否为true, false, false则跳转到end标记
+                            e.if_jump(Constants.IFEQ, end);
+                            // 读取数据压入堆栈
+                            e.invoke(read);
+                            // 读取堆栈数据
+                            e.invoke(write);
+                            // 标记当前为结束
+                            e.mark(end);
+                        } else {
+                            e.dup2();
+                            e.invoke(read);
+                            e.invoke(write);
+                        }
+                    }
+                }
+            }
+            e.return_value();
+            e.end_method();
+            ce.end_class();
+        }
+
+        @Override
+        protected Object firstInstance(Class type) {
+            return ReflectUtils.newInstance(type);
+        }
+
+        @Override
+        protected Object nextInstance(Object instance) {
+            return instance;
+        }
+    }
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br><span class="line-number">194</span><br><span class="line-number">195</span><br><span class="line-number">196</span><br><span class="line-number">197</span><br><span class="line-number">198</span><br><span class="line-number">199</span><br><span class="line-number">200</span><br><span class="line-number">201</span><br><span class="line-number">202</span><br><span class="line-number">203</span><br><span class="line-number">204</span><br><span class="line-number">205</span><br><span class="line-number">206</span><br><span class="line-number">207</span><br><span class="line-number">208</span><br><span class="line-number">209</span><br><span class="line-number">210</span><br><span class="line-number">211</span><br><span class="line-number">212</span><br><span class="line-number">213</span><br><span class="line-number">214</span><br><span class="line-number">215</span><br><span class="line-number">216</span><br><span class="line-number">217</span><br><span class="line-number">218</span><br><span class="line-number">219</span><br><span class="line-number">220</span><br><span class="line-number">221</span><br><span class="line-number">222</span><br><span class="line-number">223</span><br><span class="line-number">224</span><br><span class="line-number">225</span><br><span class="line-number">226</span><br><span class="line-number">227</span><br><span class="line-number">228</span><br><span class="line-number">229</span><br><span class="line-number">230</span><br><span class="line-number">231</span><br><span class="line-number">232</span><br><span class="line-number">233</span><br><span class="line-number">234</span><br><span class="line-number">235</span><br></div></div><h2 id="_2-测试">2. 测试</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>@Data
+class A {
+    private String name;
+    private Integer age;
+}
+
+@Data
+class B {
+    private String name;
+    private Integer age;
+    private String six;
+}
+
+void main(){
+    A a = new A();
+    a.setName(&quot;name&quot;);
+    a.setAge(18);
+    B b = new B();
+    MyBeanCopier copier = MyBeanCopier.create(A.class, B.class, true, false, null);
+    copier.copy(a, b, null);
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div></div> <footer class="page-edit" style="display:none;"><!----> <div class="last-updated"><span class="prefix">最后更新日期: </span> <span class="time">2 分钟前</span></div></footer> <!----> <!----></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-44bd5a18 data-v-44bd5a18><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-44bd5a18><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-44bd5a18></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-44bd5a18></path></svg></div><div class="kanbanniang" data-v-5775ee02><div class="banniang-container" style="display:;" data-v-5775ee02><div class="messageBox" style="right:80px;bottom:190px;display:none;" data-v-5775ee02>
+      欢迎来到 数字魔法
+    </div> <div class="operation" style="right:80px;bottom:40px;display:;" data-v-5775ee02><i class="kbnfont kbn-ban-home ban-home" data-v-5775ee02></i> <i class="kbnfont kbn-ban-message message" data-v-5775ee02></i> <i class="kbnfont kbn-ban-close close" data-v-5775ee02></i> <a target="_blank" href="https://vuepress-theme-reco.recoluan.com/views/plugins/kanbanniang.html" data-v-5775ee02><i class="kbnfont kbn-ban-info info" data-v-5775ee02></i></a> <i class="kbnfont kbn-ban-theme skin" style="display:none;" data-v-5775ee02></i></div> <canvas id="banniang" width="150" height="220" class="live2d" style="right:80px;bottom:-20px;opacity:0.9;" data-v-5775ee02></canvas></div> <div class="showBanNiang" style="display:none;" data-v-5775ee02>
+    看板娘
+  </div></div><div class="reco-bgm-panel" data-v-39f9e6e0><audio id="bgm" src="/music/Down.mp3" data-v-39f9e6e0></audio> <div class="reco-float-box" style="bottom:200px;z-index:999999;display:none;" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><img src="/music/Down.jpg" data-v-39f9e6e0></div> <div class="reco-bgm-box" style="left:10px;bottom:10px;z-index:999999;" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><div class="reco-bgm-cover" style="background-image:url(/music/Down.jpg);" data-v-39f9e6e0><div class="mini-operation" style="display:none;" data-v-39f9e6e0><i class="reco-bgm reco-bgm-pause" style="display:none;" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-play" style="display:none;" data-v-39f9e6e0></i></div> <div class="falut-message" style="display:none;" data-v-39f9e6e0>
+          播放失败
+        </div></div> <div class="reco-bgm-info" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><div class="info-box" data-v-39f9e6e0><i class="reco-bgm reco-bgm-music music" data-v-39f9e6e0></i>Down</div> <div class="info-box" data-v-39f9e6e0><i class="reco-bgm reco-bgm-artist" data-v-39f9e6e0></i>Marian Hill</div> <div class="reco-bgm-progress" data-v-39f9e6e0><div class="progress-bar" data-v-39f9e6e0><div class="bar" data-v-39f9e6e0></div></div></div> <div class="reco-bgm-operation" data-v-39f9e6e0><i class="reco-bgm reco-bgm-last last" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-pause pause" style="display:none;" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-play play" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-next next" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-volume1 volume" data-v-39f9e6e0></i> <i class="reco-bgm reco-bgm-mute mute" style="display:none;" data-v-39f9e6e0></i> <div class="volume-bar" data-v-39f9e6e0><div class="bar" data-v-39f9e6e0></div></div></div></div> <div class="reco-bgm-left-box" data-v-39f9e6e0 data-v-41bcba48 data-v-39f9e6e0><i class="reco-bgm reco-bgm-left" data-v-39f9e6e0></i></div></div></div></div></div>
+    <script src="/assets/js/app.15e8c4e9.js" defer></script><script src="/assets/js/4.c4fd3883.js" defer></script><script src="/assets/js/1.df5e0446.js" defer></script><script src="/assets/js/19.27acaead.js" defer></script>
+  </body>
+</html>
